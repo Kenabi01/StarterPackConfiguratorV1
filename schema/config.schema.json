@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConfiguratorDocument",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "canvas": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "number" },
+        "height": { "type": "number" },
+        "background": { "type": "string" }
+      },
+      "required": ["width", "height"]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "category": { "type": "string", "enum": ["person", "object"] },
+              "url": { "type": "string" },
+              "z": { "type": "number" },
+              "tint": { "type": "string" },
+              "transform": {
+                "type": "object",
+                "properties": {
+                  "x": { "type": "number" },
+                  "y": { "type": "number" },
+                  "scale": { "type": "number" },
+                  "rotation": { "type": "number" }
+                },
+                "required": ["x","y","scale","rotation"]
+              }
+            },
+            "required": ["id","category","url","z","transform"]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "text": { "type": "string" },
+              "fontFamily": { "type": "string" },
+              "fontSize": { "type": "number" },
+              "color": { "type": "string" },
+              "z": { "type": "number" },
+              "transform": {
+                "type": "object",
+                "properties": {
+                  "x": { "type": "number" },
+                  "y": { "type": "number" },
+                  "scale": { "type": "number" },
+                  "rotation": { "type": "number" }
+                },
+                "required": ["x","y","scale","rotation"]
+              }
+            },
+            "required": ["id","text","fontFamily","fontSize","color","z","transform"]
+          }
+        ]
+      }
+    }
+  },
+  "required": ["id","createdAt","canvas","items"]
+}
+

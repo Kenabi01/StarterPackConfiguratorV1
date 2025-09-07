@@ -1,0 +1,17 @@
+{
+  "name": "starterpack-configurator",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "dev:static": "node scripts/static-server.mjs 8080",
+    "build": "echo 'Static frontend + serverless build handled by Vercel'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "openai": "^4.56.0",
+    "sharp": "^0.33.3"
+  },
+  "devDependencies": {}
+}
