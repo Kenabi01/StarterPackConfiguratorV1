@@ -1,4 +1,15 @@
 2025-09-08
+- Fix: Drop zwischen mehreren Objekten platziert nun in der Nähe statt zur Startposition zurückzuspringen. Erweiterte radiale Suche und Fallback auf letzte freie Drag-Position hinzugefügt (konfigurierbar über DROP_SEARCH_* und DROP_FALLBACK_TO_LAST_FREE in apps/configurator/src/settings.js).
 - Entfernt: Datei `API-Key` aus der Historie vorbereiten (Rewrite folgt), um GitHub Push Protection zu bestehen.
 - Fix: `.gitignore` korrigiert, damit `API-Key` zuverlässig ignoriert wird.
 - Hinweis: API-Keys ausschließlich über Umgebungsvariablen (`OPENAI_API_KEY`) verwenden.
+ - Neu: `.env.example` hinzugefügt und in Git erlaubt (für sichere Konfiguration ohne Secrets).
+ - Fix: UI-Controls erschienen nicht (leere Rechtecke) wegen fehlender `ClientSplit.js`; Datei ergänzt und Fallback-Splitting aktiviert.
+ - Fix: `DEMO_MODE` auf `true` gesetzt, damit Shapes (Placeholder) lokal ohne Backend wieder generiert werden.
+- Fix: Drag/Collision glättet nun Rückweg zum Cursor. In `CanvasEngine._onMove` wird nach jeder angewandten Position die Drag-Baseline (startX/startY + orig) aktualisiert. Dadurch kollidiert die Zielposition nicht mehr gegen die vorige Ausweichlage und das Hakeln beim Zurückschieben entfällt. Slide-Helfer wurden dafür leicht refaktoriert.
+- Improve: Deutlich flüssigeres Dragging. Pointer Capture + preventDefault, exakte Positionsberechnung bei CSS-Skalierung, präzisere Text-Hit-Tests, Snapping nur beim Loslassen und Kollisionsauflösung erst nach Drop. Canvas erhält `touch-action: none` gegen Browser-Gesten.
+- Improve: Sanfte Drop-Animation. Beim Loslassen gleitet das Objekt mit Ease-Out zur finalen (gesnappten/kollisionsfreien) Position. Dauer via `DROP_ANIM_DURATION_MS` konfigurierbar.
+ - Tune: Minimale Distanz bei Kollision reduziert. `SLIDE_STEP_PIXELS` von 20 → 1 (feinere Auflösung) und `MASK_ALPHA_THRESHOLD` leicht gesenkt, damit sich Objekte deutlich näher berühren können, ohne zurückzuspringen.
+- Neu: Begrenzungsbox in der Vorschau. Sichtbarer Rahmen und harte Begrenzung für generierte Objekte; Ränder/Rect in `apps/configurator/src/settings.js` (BOUNDS_*) konfigurierbar.
+ - Neu: "Ordnen"-Button. Verteilt alle Objekte gleichmäßig als Grid innerhalb der Begrenzungsbox.
+ - Improve: "Ordnen" nutzt jetzt ein smartes, iteratives Layout. Elemente werden dynamisch ohne Überlappungen angeordnet, mit optimierten Abständen und finaler Maskenprüfung. Verhalten über `apps/configurator/src/settings.js` (ARRANGE_MODE='smart', SMART_ARRANGE_*) fein einstellbar; altes Grid bleibt als Fallback (`ARRANGE_MODE='grid'`).

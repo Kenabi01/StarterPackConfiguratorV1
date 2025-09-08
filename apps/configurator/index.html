@@ -10,13 +10,26 @@
       header, footer { padding: 8px 12px; background: #111; color: #fff; }
       aside { padding: 12px; border-right: 1px solid #ddd; overflow: auto; }
       main { position: relative; background: #f7f7f7; }
-      canvas { background: white; box-shadow: 0 0 0 1px #ddd inset; }
+      canvas { background: white; box-shadow: 0 0 0 1px #ddd inset; touch-action: none; user-select: none; }
       .toolbar { display: flex; gap: 8px; align-items: center; }
       .row { margin: 8px 0; }
       label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; }
       input[type="text"], select { width: 100%; padding: 6px; }
       button { padding: 6px 10px; }
       .grid-toggle { margin-left: auto; }
+      /* Bibliothek */
+      .lib-grid { display: grid; grid-template-columns: repeat(11, 1fr); gap: 2px; }
+      .thumb { position: relative; width: 100%; padding-top: 100%; border: 1px solid #ddd; border-radius: 4px; background: #fafafa; cursor: pointer; overflow: hidden; }
+      .thumb img { position: absolute; inset: 1px; width: calc(100% - 2px); height: calc(100% - 2px); object-fit: contain; background: transparent; }
+      .thumb .badge { position: absolute; top: 1px; right: 1px; background: #0008; color: #fff; font-size: 9px; line-height: 12px; padding: 0 4px; border-radius: 999px; }
+      .thumb.placed { outline: 2px solid #2ecc71; }
+      /* Mobile layout */
+      @media (max-width: 680px) {
+        .app { grid-template-columns: 1fr; grid-template-rows: auto auto 1fr auto; }
+        aside { border-right: 0; border-bottom: 1px solid #ddd; }
+        main { min-height: 420px; }
+        .lib-grid { grid-template-columns: repeat(6, 1fr); }
+      }
     </style>
   </head>
   <body>
@@ -43,4 +56,3 @@
     <script type="module" src="./src/main.js"></script>
   </body>
   </html>
-

@@ -85,6 +85,62 @@ function drawBlob(ctx, s) {
   ctx.closePath(); ctx.fill();
 }
 
+// Personenspezifische, hochformatige Formen
+function drawOvalTall(ctx, w, h) {
+  const rx = Math.max(2, w * 0.40);
+  const ry = Math.max(2, h * 0.40);
+  ctx.beginPath();
+  ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawCapsuleTall(ctx, w, h) {
+  const ww = Math.max(4, w * 0.70);
+  const hh = Math.max(4, h * 0.90);
+  const x = -ww / 2, y = -hh / 2;
+  const r = Math.min(ww, hh) * 0.35;
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + ww - r, y);
+  ctx.quadraticCurveTo(x + ww, y, x + ww, y + r);
+  ctx.lineTo(x + ww, y + hh - r);
+  ctx.quadraticCurveTo(x + ww, y + hh, x + ww - r, y + hh);
+  ctx.lineTo(x + r, y + hh);
+  ctx.quadraticCurveTo(x, y + hh, x, y + hh - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawTeardropTall(ctx, w, h) {
+  const rx = Math.max(2, w * 0.36);
+  const ry = Math.max(2, h * 0.46);
+  ctx.beginPath();
+  // Oberer ovaler Teil
+  ctx.ellipse(0, -ry * 0.2, rx, ry * 0.65, 0, Math.PI, 0, true);
+  // Spitze unten
+  ctx.quadraticCurveTo(rx * 0.2, ry * 0.6, 0, ry);
+  ctx.quadraticCurveTo(-rx * 0.2, ry * 0.6, -rx, 0);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawBeanTall(ctx, w, h) {
+  const rx = Math.max(2, w * 0.40);
+  const ry = Math.max(2, h * 0.42);
+  const kx = rx * 0.4, ky = ry * 0.35;
+  ctx.beginPath();
+  ctx.moveTo(0, -ry);
+  ctx.bezierCurveTo(rx, -ry, rx, -ky, kx, 0);
+  ctx.bezierCurveTo(0, ky, -rx * 0.2, ry, 0, ry);
+  ctx.bezierCurveTo(rx * 0.3, ry, rx * 0.6, ky, rx * 0.2, ky * 0.2);
+  ctx.bezierCurveTo(rx * -0.2, -ky * 0.2, -rx * 0.4, -ry * 0.8, 0, -ry);
+  ctx.closePath();
+  ctx.fill();
+}
+
 function drawGloss(ctx, s) {
   const r = s * 0.42;
   const g = ctx.createRadialGradient(-r * 0.3, -r * 0.3, r * 0.1, 0, 0, r);
@@ -96,9 +152,12 @@ function drawGloss(ctx, s) {
 
 export function generatePlaceholderPng(options = {}) {
   const cfg = { ...PLACEHOLDER_PNG, ...options };
+  // Unterstützt wahlweise quadratische Größe (size) oder explizite Breite/Höhe
   const s = cfg.size;
+  const dw = Math.max(1, Math.round(cfg.width || s));
+  const dh = Math.max(1, Math.round(cfg.height || s));
   const canvas = document.createElement("canvas");
-  canvas.width = s; canvas.height = s;
+  canvas.width = dw; canvas.height = dh;
   const ctx = canvas.getContext("2d");
   // Transparenter Hintergrund: nichts füllen
 
@@ -107,19 +166,29 @@ export function generatePlaceholderPng(options = {}) {
 
   // Setup
   ctx.save();
-  ctx.translate(s / 2, s / 2);
+  ctx.translate(dw / 2, dh / 2);
   ctx.rotate(rot);
   const fill = randOf(cfg.colors);
   ctx.fillStyle = fill;
 
   const shape = randOf(cfg.shapes);
   switch (shape) {
-    case "circle": drawCircle(ctx, s); break;
-    case "rect": drawRect(ctx, s); break;
-    case "triangle": drawTriangle(ctx, s); break;
-    case "star": drawStar(ctx, s); break;
-    case "hexagon": drawHexagon(ctx, s); break;
-    default: drawBlob(ctx, s); break;
+    // Standard-Formen (quadratisch skaliert)
+    case "circle": drawCircle(ctx, Math.min(dw, dh)); break;
+    case "rect": drawRect(ctx, Math.min(dw, dh)); break;
+    case "triangle": drawTriangle(ctx, Math.min(dw, dh)); break;
+    case "star": drawStar(ctx, Math.min(dw, dh)); break;
+    case "hexagon": drawHexagon(ctx, Math.min(dw, dh)); break;
+    case "blob": default:
+      if (shape === "blob") { drawBlob(ctx, Math.min(dw, dh)); break; }
+      // Personen-Formen (hochformatig)
+      if (shape === "ovalTall") { drawOvalTall(ctx, dw, dh); break; }
+      if (shape === "capsuleTall") { drawCapsuleTall(ctx, dw, dh); break; }
+      if (shape === "teardropTall") { drawTeardropTall(ctx, dw, dh); break; }
+      if (shape === "beanTall") { drawBeanTall(ctx, dw, dh); break; }
+      // Fallback
+      drawBlob(ctx, Math.min(dw, dh));
+      break;
   }
 
   if (cfg.stroke?.enabled) {
@@ -128,11 +197,8 @@ export function generatePlaceholderPng(options = {}) {
     ctx.stroke();
   }
 
-  if (cfg.glossy) {
-    drawGloss(ctx, s);
-  }
+  // Gloss-Effekt entfernt: keine zusätzliche Glanz-Überlagerung
 
   ctx.restore();
   return canvas.toDataURL("image/png");
 }
-
