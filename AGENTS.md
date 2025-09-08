@@ -1,25 +1,19 @@
 # Zweck
-Der Konfigurator dient dazu, visuelle Inhalte flexibel zu kombinieren, anzupassen und wiederherstellbar zu speichern.
-Er ermöglicht eine interaktive Vorschau und dokumentiert alle Konfigurationen strukturiert.
-Konfigurator wird per iFrame in die Vercel Website eingefügt. 
+Ein Online-Konfigurator wird per iFrame in eine Website eingebettet und ist für Smartphones optimiert. Nutzer können Produkte mit Bildern und Texten individuell gestalten, speichern und später wieder aufrufen. Ein Creditsystem und die Shop-Anbindung regeln Kosten und Verkauf.
 
 # Kernprinzip
-	•	Interaktive Kombination von Bildern von Menschen, Gegenständen und Texten in einer Live-Vorschau
-	•	Einheitliche Verwaltung und Wiederherstellbarkeit aller Konfigurationen über strukturierte Dateien (z. B. JSON)
-	•	Klare Trennung und Verarbeitung von Eingaben (Text, Bild) je nach Kategorie
-	•	Flexible Anpassung von Position, Größe, Rotation, Farbe und Schrift
-	•	Automatische Organisation und eindeutige Identifizierung aller erzeugten Inhalte
-	•	Mechanismen zur Objekttrennung bei komplexen Bildern
-	•	Technische Basis: modularer, erweiterbarer Code mit Backend-Anbindung
-	•	Transparente Nutzung über Credit-System und direkte Shop-Integration
+	•	Einbettung per iFrame in eine Website, optimiert für Smartphones
+	•	Individuelle Produktgestaltung mit Bildern und Texten
+	•	Speicherung und exakte Wiederherstellung jeder Konfiguration
+	•	Creditsystem zur Kostenkontrolle
+	•	Shop-Anbindung für direkte Vermarktung
 
 # Struktur
-	•	EINSTELLUNGEN-Block: Alle veränderbaren Werte (Limits, Farben, API-Keys, Verzeichnisse etc.) ganz oben sammeln, klar kommentieren, sodass Laien sie anpassen können.
-	•	Modularität: Jede Funktion oder Klasse hat nur eine klar abgegrenzte Aufgabe. Keine monolithischen Dateien.
-	•	Erweiterbarkeit: Code so strukturieren, dass neue Kategorien, Eingabearten oder APIs ohne tiefen Eingriff ergänzt werden können.
-	•	Klare Trennung: Frontend (UI, Vorschau, Interaktion) und Backend (API-Anbindung, Dateiverwaltung, Speicherung) strikt getrennt halten.
-	•	Konfigurierbarkeit: Alle Hardcodings vermeiden. Stattdessen Konstanten, ENV-Variablen oder Config-Dateien verwenden.
-	•	Dokumentation im Code: Kommentare nur da, wo für spätere Änderungen nötig. Kein Fließtext, sondern präzise Hinweise.
-	•	IDs und Dateien: Alle generierten Dateien mit eindeutigen IDs versehen. IDs auch in JSON-Konfigurationsdateien speichern.
-
-⸻
+		•	EINSTELLUNGEN-Block: Alle veränderbaren Werte zentral und kommentiert am Anfang. Keine Hardcodings, sondern Konstanten, ENV-Variablen oder Config-Dateien.
+	•	Trennung: Frontend/Backend strikt getrennt. Daten und Logik, interne Details und Schnittstellen sauber kapseln.
+	•	Code-Qualität: Modular, verständliche Namen, PEP8, keine magischen Zahlen, DRY-Prinzip, klare Schnittstellen.
+	•	Wiederverwendbarkeit & Erweiterbarkeit: Kleine, unabhängige Module/Funktionen, flexible Schnittstellen, einfache Erweiterung.
+	•	Testbarkeit: Unit-Tests von Anfang an, automatisiert mit pytest/unittest.
+	•	Dokumentation: Prägnante Kommentare/Docstrings mit Fokus auf Zweck.
+	•	Fehler- & Performancebewusstsein: Robuste Fehlerbehandlung, effiziente Datenstrukturen, unnötige Wiederholungen vermeiden.
+	•	Organisation: Eindeutige IDs für Dateien/Konfigs, Versionskontrolle mit Git, schrittweise Entwicklung.
