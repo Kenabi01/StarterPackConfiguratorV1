@@ -1,5 +1,7 @@
 # Ignore secrets and env files
 API-Key
+.DS_Store
+node_modules/
 .env
 .env.*
 *.env
