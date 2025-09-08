@@ -1,4 +1,5 @@
-API-Key:1
+# Ignore secrets and env files
+API-Key
 .env
 .env.*
 *.env
